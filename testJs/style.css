@@ -1,0 +1,42 @@
+html{
+  font-family: Arial, sans-serif; /* フォントを設定 */
+  font-size: 62.5%;
+}
+
+.container{
+  margin: 0 auto;
+  max-width: 768px;
+}
+
+.body{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table{
+  padding: 40px 40px 48px 40px;
+  background: #fafafa;
+}
+
+.display {
+  font-size: 96px;
+  font-weight: 700;
+  width: 100%;
+  text-align: right;
+  margin-bottom: 40px;
+}
+
+.cell{
+  border: 4px solid #fafafa;
+  cursor: pointer;
+  min-width: calc(768px / 4);
+  height: 120px;
+  font-size: 32px;
+  color: #333;
+  background: #fefefe;
+}
+.cell:hover{
+  opacity: 0.48;
+}
