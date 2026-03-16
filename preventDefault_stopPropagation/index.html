@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./reset.css">
+  <link rel="stylesheet" href="./style.css">
+  <title>preventDefault / stopPropagation デモ</title>
+</head>
+
+<body class="body">
+  <main class="container">
+    <h1 class="page-title">イベントの制御を学ぼう</h1>
+
+    <!-- preventDefault セクション -->
+    <section class="section">
+      <h2 class="section-title">① preventDefault</h2>
+      <p class="description">
+        ブラウザのデフォルト動作（リンク遷移・フォーム送信など）をキャンセルします。
+      </p>
+
+      <div class="demo-area">
+        <!-- リンクのデモ -->
+        <div class="demo-block">
+          <h3 class="demo-label">リンクのデモ</h3>
+          <a id="link-default" href="https://example.com" class="demo-link" target="_blank">
+            デフォルト：クリックで example.com へ移動
+          </a>
+          <a id="link-prevented" href="https://example.com" class="demo-link prevented" target="_blank">
+            preventDefault あり：クリックしても移動しない
+          </a>
+          <div id="link-log" class="log">← クリックしてみよう</div>
+        </div>
+
+        <!-- チェックボックスのデモ -->
+        <div class="demo-block">
+          <h3 class="demo-label">チェックボックスのデモ</h3>
+          <label class="checkbox-label">
+            <input id="check-default" type="checkbox" class="demo-check">
+            デフォルト：チェックできる
+          </label>
+          <label class="checkbox-label">
+            <input id="check-prevented" type="checkbox" class="demo-check prevented-check">
+            preventDefault あり：チェックできない
+          </label>
+          <div id="check-log" class="log">← クリックしてみよう</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- stopPropagation セクション -->
+    <section class="section">
+      <h2 class="section-title">② stopPropagation</h2>
+      <p class="description">
+        イベントが親要素へ伝播（バブリング）するのを止めます。
+      </p>
+
+      <div class="demo-area">
+        <!-- バブリングのデモ -->
+        <div class="demo-block">
+          <h3 class="demo-label">stopPropagation なし（バブリングあり）</h3>
+          <div id="outer-default" class="box outer">
+            <span class="box-label">祖父 (div#outer)</span>
+            <div id="middle-default" class="box middle">
+              <span class="box-label">親 (div#middle)</span>
+              <button id="inner-default" class="box inner btn">
+                子 (button#inner) をクリック
+              </button>
+            </div>
+          </div>
+          <div id="bubble-log" class="log">← ボタンをクリックしてみよう</div>
+        </div>
+
+        <div class="demo-block">
+          <h3 class="demo-label">stopPropagation あり（バブリング停止）</h3>
+          <div id="outer-stopped" class="box outer">
+            <span class="box-label">祖父 (div#outer)</span>
+            <div id="middle-stopped" class="box middle">
+              <span class="box-label">親 (div#middle)</span>
+              <button id="inner-stopped" class="box inner btn">
+                子 (button#inner) をクリック
+              </button>
+            </div>
+          </div>
+          <div id="stop-log" class="log">← ボタンをクリックしてみよう</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ログリセット -->
+    <button id="reset-btn" class="reset-btn">ログをリセット</button>
+  </main>
+
+  <script src="./main.js"></script>
+</body>
+
+</html>
