@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お問い合わせ</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #6e6e73;
+      margin-bottom: 2rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #3a3a3c;
+    }
+
+    input, textarea {
+      border: 1.5px solid #d2d2d7;
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+      outline: none;
+      width: 100%;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #0071e3;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .error-msg {
+      font-size: 0.8rem;
+      color: #ff3b30;
+      display: none;
+    }
+
+    .field.invalid .error-msg { display: block; }
+    .field.invalid input,
+    .field.invalid textarea { border-color: #ff3b30; }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 0.85rem;
+      background: #0071e3;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+
+    button[type="submit"]:hover { background: #0077ed; }
+    button[type="submit"]:active { background: #005bbf; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>お問い合わせ</h1>
+    <p class="subtitle">お気軽にご連絡ください。</p>
+
+    <form id="contactForm" novalidate>
+      <div class="field" id="nameField">
+        <label for="name">お名前</label>
+        <input type="text" id="name" placeholder="山田 太郎" />
+        <span class="error-msg">お名前を入力してください</span>
+      </div>
+
+      <div class="field" id="emailField">
+        <label for="email">メールアドレス</label>
+        <input type="email" id="email" placeholder="example@mail.com" />
+        <span class="error-msg">有効なメールアドレスを入力してください</span>
+      </div>
+
+      <div class="field" id="messageField">
+        <label for="message">お問い合わせ内容</label>
+        <textarea id="message" placeholder="ご質問・ご要望をお書きください"></textarea>
+        <span class="error-msg">お問い合わせ内容を入力してください</span>
+      </div>
+
+      <button type="submit">送信する</button>
+    </form>
+  </div>
+
+  <script src="form.js"></script>
+</body>
+</html>
