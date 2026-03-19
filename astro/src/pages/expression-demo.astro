@@ -1,0 +1,133 @@
+---
+import Card from '../components/Card.astro';
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>式として評価するとは</title>
+    <style>
+      body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+      section { margin-bottom: 2rem; }
+      h2 { border-bottom: 2px solid #333; padding-bottom: 0.3rem; }
+      pre  { background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 1rem; line-height: 2; }
+      .ok  { background: #e6ffe6; border: 1px solid #4caf50; border-radius: 6px; padding: 0.8rem 1rem; }
+      .ng  { background: #ffe6e6; border: 1px solid #f44336; border-radius: 6px; padding: 0.8rem 1rem; }
+      code { background: #eee; padding: 0.1em 0.3em; border-radius: 3px; font-size: 0.9em; }
+    </style>
+  </head>
+  <body>
+    <h1>「式として評価する」とは</h1>
+    <p>
+      Astro（JSX）では <code>{"{ }"}</code> の中に <strong>値を返す式</strong> しか書けない。<br />
+      文（statement）は書けないが、式（expression）ならメソッドチェーンでも三項演算子でも何でも OK。
+    </p>
+
+    <!-- ===================== 式 vs 文 ===================== -->
+    <section>
+      <h2>式（expression）と文（statement）の違い</h2>
+
+      <div class="ok">
+        <strong>OK: 式 — 値を返すもの</strong>
+        <pre>{`// 文字列リテラル → "hello" という値
+{"hello"}
+
+// 計算 → 42 という値
+{6 * 7}
+
+// 三項演算子 → true か false に応じた値
+{1 > 0 ? "大きい" : "小さい"}
+
+// .map() → 配列（JSX要素の配列）を値として返す
+{["a","b"].map(x => <span>{x}</span>)}`}</pre>
+      </div>
+
+      <div class="ng">
+        <strong>NG: 文 — 値を返さないもの</strong>
+        <pre>{`// if 文は値を返さない → NG
+{if (flag) { <Card /> }}
+
+// for 文も値を返さない → NG
+{for (const x of list) { <Card title={x} /> }}`}</pre>
+      </div>
+    </section>
+
+    <!-- ===================== 実際に評価される様子 ===================== -->
+    <section>
+      <h2>実際に「式」が評価される様子</h2>
+      <p>
+        <code>.map()</code> は <strong>配列を返す式</strong> なので <code>{"{ }"}</code> の中に書ける。<br />
+        Astro はその配列を受け取り、順番にレンダリングする。
+      </p>
+
+      <pre>{`// ① .map() が ["りんご","バナナ"] を JSX 要素の配列に変換（式として評価）
+// ② その配列が { } の中に置かれ、Astro が展開してレンダリング
+{["りんご", "バナナ"].map((name) => (
+  <Card title={name} description={name} />
+))}`}</pre>
+
+      <p>実際の出力:</p>
+      {["りんご", "バナナ"].map((name) => (
+        <Card title={name} description={`${name}カードです`} />
+      ))}
+    </section>
+
+    <!-- ===================== 式として評価されているか確認する方法 ===================== -->
+    <section>
+      <h2>「式」かどうか確認する簡単な方法</h2>
+      <p>変数に代入できれば式。代入できなければ文（statementなのでNGの場合が多い）。</p>
+
+      <pre>{`// 代入できる → 式
+const result = ["a", "b"].map(x => <span>{x}</span>);
+const n       = 6 * 7;
+const label   = flag ? "YES" : "NO";
+
+// 代入できない → 文
+// const x = if (flag) { ... }   // 構文エラー
+// const y = for (...) { ... }   // 構文エラー`}</pre>
+    </section>
+
+    <!-- ===================== Object.entries() で式として評価 ===================== -->
+    <section>
+      <h2>Object.entries() も式として評価される</h2>
+      <p>
+        <code>Object.entries(obj)</code> は <code>[key, value][]</code> の配列を返す式。<br />
+        その後 <code>.map()</code> でJSX要素の配列に変換し、<code>{"{ }"}</code> に渡す。
+      </p>
+
+      <pre>{`// Object.entries() → .map() → JSX要素の配列（全体がひとつの式）
+{Object.entries({ 赤: "#ffe0e0", 青: "#e0e0ff" })
+  .map(([name, color]) => (
+    <Card
+      title={name}
+      description={\`カラーコード: \${color}\`}
+      color={color}
+    />
+  ))
+}`}</pre>
+
+      {Object.entries({ 赤: "#ffe0e0", 青: "#e0e0ff" }).map(([name, color]) => (
+        <Card title={name} description={`カラーコード: ${color}`} color={color} />
+      ))}
+    </section>
+
+    <!-- ===================== Array.from() で式として評価 ===================== -->
+    <section>
+      <h2>Array.from() も式として評価される</h2>
+      <p>
+        <code>Array.from({"{ length: N }"}, fn)</code> は長さ N の配列を返す式。<br />
+        <code>for</code> 文と違い「値を返す」ので <code>{"{ }"}</code> の中に直接書ける。
+      </p>
+
+      <pre>{`// Array.from() → JSX要素の配列（全体がひとつの式）
+{Array.from({ length: 3 }, (_, i) => (
+  <Card title={\`No.\${i + 1}\`} description={\`インデックス \${i}\`} />
+))}`}</pre>
+
+      {Array.from({ length: 3 }, (_, i) => (
+        <Card title={`No.${i + 1}`} description={`インデックス ${i}`} />
+      ))}
+    </section>
+  </body>
+</html>

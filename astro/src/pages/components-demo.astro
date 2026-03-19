@@ -1,0 +1,67 @@
+---
+import Card from '../components/Card.astro';
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>コンポーネント呼び出しデモ</title>
+    <style>
+      body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+      section { margin-bottom: 2rem; }
+      h2 { border-bottom: 2px solid #333; padding-bottom: 0.3rem; }
+      pre { background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 1rem; line-height: 2; }
+    </style>
+  </head>
+  <body>
+    <h1>コンポーネント呼び出しデモ</h1>
+
+    <!-- ===================== .map() ===================== -->
+    <section>
+      <h2>.map()</h2>
+      <p>配列の各要素を変換してコンポーネントを生成する。</p>
+      <pre>{`{["りんご", "バナナ", "みかん"].map((fruit) => (
+  <Card title={fruit} description={\`これは\${fruit}です\`} />
+))}`}</pre>
+
+      {["りんご", "バナナ", "みかん"].map((fruit) => (
+        <Card title={fruit} description={`これは${fruit}です`} />
+      ))}
+    </section>
+
+    <!-- ===================== Array.from() ===================== -->
+    <section>
+      <h2>Array.from()</h2>
+      <p>長さを指定して連番など任意の配列を生成し、コンポーネントを並べる。</p>
+      <pre>{`{Array.from({ length: 4 }, (_, i) => (
+  <Card title={\`アイテム \${i + 1}\`} description={\`インデックス: \${i}\`} />
+))}`}</pre>
+
+      {Array.from({ length: 4 }, (_, i) => (
+        <Card title={`アイテム ${i + 1}`} description={`インデックス: ${i}`} />
+      ))}
+    </section>
+
+    <!-- ===================== Object.entries() ===================== -->
+    <section>
+      <h2>Object.entries()</h2>
+      <p>オブジェクトの各エントリ（キーと値）を使ってコンポーネントを生成する。</p>
+      <pre>{`{Object.entries({
+  red:   { label: "赤", color: "#ffe0e0" },
+  green: { label: "緑", color: "#e0ffe0" },
+  blue:  { label: "青", color: "#e0e0ff" },
+}).map(([key, { label, color }]) => (
+  <Card title={key} description={label} color={color} />
+))}`}</pre>
+
+      {Object.entries({
+        red:   { label: "赤", color: "#ffe0e0" },
+        green: { label: "緑", color: "#e0ffe0" },
+        blue:  { label: "青", color: "#e0e0ff" },
+      }).map(([key, { label, color }]) => (
+        <Card title={key} description={label} color={color} />
+      ))}
+    </section>
+  </body>
+</html>
