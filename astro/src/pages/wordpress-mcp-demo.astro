@@ -1,0 +1,237 @@
+---
+// WordPress MCP デモページ
+// MCPサーバーの設定は ~/.claude.json に記述する必要がある（~/.claude/settings.json ではない）
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>WordPress MCP 接続デモ</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 800px;
+        margin: 4rem auto;
+        padding: 0 1rem;
+        line-height: 1.7;
+      }
+      h1 { margin-bottom: 0.25rem; }
+      h2 { margin-top: 2.5rem; border-bottom: 2px solid #eee; padding-bottom: 0.4rem; }
+      .subtitle { color: #666; margin-bottom: 2rem; }
+      .back { display: inline-block; margin-bottom: 2rem; color: #555; text-decoration: none; font-size: 0.9rem; }
+      .back:hover { color: #000; }
+
+      pre {
+        background: #1e1e1e;
+        color: #d4d4d4;
+        padding: 1.2rem 1.5rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 0.88rem;
+        line-height: 1.6;
+      }
+      code { font-family: "Fira Code", "Cascadia Code", monospace; }
+
+      .key   { color: #9cdcfe; }
+      .str   { color: #ce9178; }
+      .bool  { color: #569cd6; }
+      .cmmt  { color: #6a9955; }
+
+      .note {
+        background: #fff8e1;
+        border-left: 4px solid #f0b429;
+        padding: 1rem 1.2rem;
+        border-radius: 0 6px 6px 0;
+        margin: 1.5rem 0;
+        font-size: 0.95rem;
+      }
+      .note strong { color: #b8860b; }
+
+      .ok {
+        background: #f0fff4;
+        border-left: 4px solid #38a169;
+        padding: 1rem 1.2rem;
+        border-radius: 0 6px 6px 0;
+        margin: 1.5rem 0;
+      }
+      .ng {
+        background: #fff5f5;
+        border-left: 4px solid #e53e3e;
+        padding: 1rem 1.2rem;
+        border-radius: 0 6px 6px 0;
+        margin: 1.5rem 0;
+      }
+      .label {
+        display: inline-block;
+        font-weight: bold;
+        font-size: 0.85rem;
+        padding: 0.1rem 0.5rem;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+      }
+      .ok .label { background: #38a169; color: #fff; }
+      .ng .label { background: #e53e3e; color: #fff; }
+
+      .tool-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+      .tool-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem;
+      }
+      .tool-card h4 { margin: 0 0 0.4rem; font-size: 0.95rem; color: #333; }
+      .tool-card p  { margin: 0; color: #666; font-size: 0.85rem; }
+
+      @media (max-width: 600px) {
+        .tool-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="back" href="/">← デモ一覧に戻る</a>
+
+    <h1>WordPress MCP 接続デモ</h1>
+    <p class="subtitle">Claude Code から WordPress を操作する MCP サーバーの設定と使い方</p>
+
+    <!-- ===== 重要な設定ポイント ===== -->
+    <h2>⚙️ 設定ファイルの場所（重要）</h2>
+
+    <div class="note">
+      <strong>ポイント：</strong>
+      MCPサーバーの設定は <code>~/.claude.json</code> に記述する必要があります。<br />
+      <code>~/.claude/settings.json</code> に書いても <code>/mcp</code> コマンドで認識されません。
+    </div>
+
+    <div class="ng">
+      <span class="label">NG</span>
+      <code>~/.claude/settings.json</code> — <strong>/mcp で呼び出せない</strong>
+    </div>
+
+    <div class="ok">
+      <span class="label">OK</span>
+      <code>~/.claude.json</code> — <strong>/mcp で正しく認識される</strong>
+    </div>
+
+    <!-- ===== ~/.claude.json の設定例 ===== -->
+    <h2>📄 ~/.claude.json の設定例</h2>
+
+    <p>
+      ホームディレクトリ直下の <code>~/.claude.json</code> に
+      <code>mcpServers</code> キーを追加します。
+    </p>
+
+    <pre><code>{`{
+  `}<span class="key">"mcpServers"</span>{`: {
+    `}<span class="key">"wordpress"</span>{`: {
+      `}<span class="key">"command"</span>{`: `}<span class="str">"npx"</span>{`,
+      `}<span class="key">"args"</span>{`: [
+        `}<span class="str">"-y"</span>{`,
+        `}<span class="str">"@automattic/mcp-wordpress"</span>{`
+      ],
+      `}<span class="key">"env"</span>{`: {
+        `}<span class="key">"WORDPRESS_SITE_URL"</span>{`: `}<span class="str">"https://your-site.com"</span>{`,
+        `}<span class="key">"WORDPRESS_USERNAME"</span>{`: `}<span class="str">"your-username"</span>{`,
+        `}<span class="key">"WORDPRESS_APP_PASSWORD"</span>{`: `}<span class="str">"xxxx xxxx xxxx xxxx xxxx xxxx"</span>{`
+      `}<span class="cmmt">// WordPress 管理画面 → ユーザー → アプリケーションパスワード で発行</span>{`
+      }
+    }
+  }
+}`}</code></pre>
+
+    <div class="note">
+      <strong>App Password の発行手順：</strong><br />
+      WordPress 管理画面 → <em>ユーザー → プロフィール</em> → 一番下の「アプリケーションパスワード」セクション
+      → 任意の名前を入力して「新しいアプリケーションパスワードを追加」をクリック
+    </div>
+
+    <!-- ===== /mcp での確認方法 ===== -->
+    <h2>🔍 /mcp で接続を確認する</h2>
+
+    <p>Claude Code のチャットで以下のスラッシュコマンドを入力します：</p>
+
+    <pre><code>/mcp</code></pre>
+
+    <p>
+      設定が正しければ <strong>wordpress</strong> サーバーが一覧に表示されます。<br />
+      表示されない場合は <code>~/.claude.json</code> の JSON 構文エラーを確認してください。
+    </p>
+
+    <!-- ===== 利用可能なツール ===== -->
+    <h2>🛠️ 利用可能な MCP ツール</h2>
+
+    <p>接続後、Claude Code から以下の WordPress 操作が可能になります：</p>
+
+    <div class="tool-grid">
+      <div class="tool-card">
+        <h4>📝 create-post</h4>
+        <p>新しい投稿を作成する。タイトル・本文・ステータスを指定可能。</p>
+      </div>
+      <div class="tool-card">
+        <h4>📖 get-post</h4>
+        <p>投稿IDを指定して既存の投稿内容を取得する。</p>
+      </div>
+      <div class="tool-card">
+        <h4>🔎 search-posts</h4>
+        <p>キーワードで投稿を検索し、一覧を返す。</p>
+      </div>
+      <div class="tool-card">
+        <h4>✏️ update-post</h4>
+        <p>既存投稿のタイトル・本文・ステータスを更新する。</p>
+      </div>
+      <div class="tool-card">
+        <h4>🧱 wordpress-block-types-schema</h4>
+        <p>利用可能な Gutenberg ブロックのスキーマ情報を取得する。</p>
+      </div>
+    </div>
+
+    <!-- ===== 使用例 ===== -->
+    <h2>💬 Claude Code での使用例</h2>
+
+    <p>接続後は自然言語でそのまま指示できます：</p>
+
+    <pre><code>{`# 投稿を検索する
+「"Astro" というキーワードで WordPress の投稿を検索して」
+
+# 新しい投稿を作成する
+「タイトル "Hello MCP" で下書き投稿を作成して。本文は "MCPで作成したテスト投稿です。"」
+
+# 投稿を更新する
+「投稿ID 42 のステータスを publish に変更して」`}</code></pre>
+
+    <!-- ===== トラブルシューティング ===== -->
+    <h2>🩺 トラブルシューティング</h2>
+
+    <table style="width:100%; border-collapse: collapse; font-size: 0.9rem;">
+      <thead>
+        <tr style="background:#f5f5f5;">
+          <th style="text-align:left; padding: 0.6rem 0.8rem; border: 1px solid #ddd;">症状</th>
+          <th style="text-align:left; padding: 0.6rem 0.8rem; border: 1px solid #ddd;">確認ポイント</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 0.6rem 0.8rem; border: 1px solid #ddd;">/mcp に wordpress が表示されない</td>
+          <td style="padding: 0.6rem 0.8rem; border: 1px solid #ddd;"><code>~/.claude.json</code> に書いているか確認（<code>~/.claude/settings.json</code> は不可）</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.6rem 0.8rem; border: 1px solid #ddd;">認証エラーが出る</td>
+          <td style="padding: 0.6rem 0.8rem; border: 1px solid #ddd;">App Password のスペースを含めてそのままコピーしているか確認</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.6rem 0.8rem; border: 1px solid #ddd;">npx が見つからない</td>
+          <td style="padding: 0.6rem 0.8rem; border: 1px solid #ddd;">Node.js がインストールされているか確認（<code>node -v</code>）</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.6rem 0.8rem; border: 1px solid #ddd;">REST API が 401/403 になる</td>
+          <td style="padding: 0.6rem 0.8rem; border: 1px solid #ddd;">WordPress の「パーマリンク設定」を一度保存し直して REST API を有効化する</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
