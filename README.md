@@ -8,8 +8,11 @@
 
 ```
 playground/
-├── threejs/   # Three.js × Vite による 3D 描画の練習環境
-└── testJs/    # バニラ JavaScript の動作確認用スニペット
+├── threejs/                        # Three.js × Vite による 3D 描画の練習環境
+├── astro/                          # Astro フレームワークの学習環境
+├── wp/                             # WordPress × Docker のローカル開発環境
+├── localStrage/                    # localStorage を使ったフォーム実装のサンプル
+└── preventDefault_stopPropagation/ # イベント伝播・デフォルト動作制御のサンプル
 ```
 
 ## 各ディレクトリの概要
@@ -32,21 +35,70 @@ npm run dev
 
 ---
 
-### `testJs/`
-バニラ JavaScript の動作確認・スニペット置き場です。現在は電卓 UI のサンプルが入っています。
+### `astro/`
+[Astro](https://astro.build/) フレームワークの Minimal テンプレートを使った学習環境です。
+
+| 項目 | 内容 |
+| :--- | :--- |
+| **Framework** | Astro |
+| **言語** | TypeScript |
+| **主な内容** | 静的サイト生成、コンポーネント構造の学習 |
+
+**セットアップ**
+```bash
+cd astro
+npm install
+npm run dev
+```
+
+---
+
+### `wp/`
+WordPress を Docker Compose で動かすローカル開発環境です。
+
+| 項目 | 内容 |
+| :--- | :--- |
+| **技術** | WordPress / Docker Compose |
+| **主な内容** | WordPress テーマ・プラグイン開発のローカル環境 |
+
+**起動方法**
+```bash
+cd wp
+npm start      # docker compose up -d
+npm stop       # docker compose down
+npm run logs   # ログ確認
+```
+
+---
+
+### `localStrage/`
+`localStorage` を活用したフォーム実装のサンプルです。入力値の一時保存や復元などを確認できます。
 
 | 項目 | 内容 |
 | :--- | :--- |
 | **技術** | HTML / CSS / Vanilla JS |
 | **依存関係** | なし（npm 不要） |
-| **主な内容** | 電卓 UI（四則演算） |
+| **主な内容** | お問い合わせフォーム × localStorage による入力値の保存 |
 
 **起動方法**
 ```bash
-# ブラウザで index.html を直接開く
-open testJs/index.html
+open localStrage/index.html
+```
 
-# または任意のローカルサーバ経由で確認
+---
+
+### `preventDefault_stopPropagation/`
+`event.preventDefault()` と `event.stopPropagation()` の動作を確認するためのサンプルです。
+
+| 項目 | 内容 |
+| :--- | :--- |
+| **技術** | HTML / CSS / Vanilla JS |
+| **依存関係** | なし（npm 不要） |
+| **主な内容** | イベントのデフォルト動作キャンセルとイベント伝播停止の比較 |
+
+**起動方法**
+```bash
+open preventDefault_stopPropagation/index.html
 ```
 
 ---
