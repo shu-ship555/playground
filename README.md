@@ -8,6 +8,9 @@
 
 ```
 playground/
+├── react/                          # React × Vite × TypeScript の学習環境
+├── nextjs/                         # Next.js App Router × TypeScript の学習環境
+├── typescript-learn/               # TypeScript (Vanilla) × Vite の学習環境
 ├── threejs/                        # Three.js × Vite による 3D 描画の練習環境
 ├── astro/                          # Astro フレームワークの学習環境
 ├── wp/                             # WordPress × Docker のローカル開発環境
@@ -16,6 +19,61 @@ playground/
 ```
 
 ## 各ディレクトリの概要
+
+### `react/`
+React の基礎を Vite + TypeScript 環境で学ぶためのサンドボックスです。
+
+| 項目 | 内容 |
+| :--- | :--- |
+| **Framework** | React v19 |
+| **Bundler** | Vite v6 |
+| **言語** | TypeScript |
+| **主な内容** | コンポーネント、useState、useEffect、Props など基礎構文の練習 |
+
+**セットアップ**
+```bash
+cd react
+npm install
+npm run dev
+```
+
+---
+
+### `nextjs/`
+Next.js App Router の仕組みを TypeScript で学ぶためのサンドボックスです。
+
+| 項目 | 内容 |
+| :--- | :--- |
+| **Framework** | Next.js v16（App Router） |
+| **言語** | TypeScript |
+| **主な内容** | ページルーティング、Server / Client Components、データフェッチ、レイアウト構造 |
+
+**セットアップ**
+```bash
+cd nextjs
+npm install
+npm run dev
+```
+
+---
+
+### `typescript-learn/`
+TypeScript の型システムや構文を Vite 環境で手を動かしながら学ぶためのサンドボックスです。
+
+| 項目 | 内容 |
+| :--- | :--- |
+| **Bundler** | Vite v6 |
+| **言語** | TypeScript (Vanilla) |
+| **主な内容** | 型注釈、インターフェース、ジェネリクス、型ガード、ユーティリティ型などの練習 |
+
+**セットアップ**
+```bash
+cd typescript-learn
+npm install
+npm run dev
+```
+
+---
 
 ### `threejs/`
 Three.js を Vite + npm 管理下で動かすための練習環境です。
